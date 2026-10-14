@@ -2,51 +2,54 @@
 <header class="site-header" id="site-header">
   <div class="header-container">
 
-    <a class="brand" href="#" data-link="home" aria-label="Mariana Bittencourt — Início">
-      <span class="brand-name">MARIANA</span>
-      <span class="brand-surname">BITTENCOURT</span>
+    <a class="brand" href="#" data-link="home"
+       aria-label="Mariana Bittencourt — Início">
+      <span class="brand-monogram">MB<span>®</span></span>
+      <span class="brand-name">MARIANA BITTENCOURT</span>
     </a>
 
-    <button
-      class="menu-toggle"
-      type="button"
-      aria-label="Abrir menu"
-      aria-expanded="false"
-      aria-controls="main-navigation"
-    >
+    <nav class="main-navigation" id="main-navigation"
+         aria-label="Navegação principal">
+
+      <a href="#" data-link="about" class="nav-link">
+        <span class="nav-index">01</span>
+        Sobre
+      </a>
+
+      <div class="nav-dropdown">
+        <button class="dropdown-toggle" type="button"
+                aria-expanded="false" aria-controls="services-menu">
+          <span class="nav-index">02</span>
+          Serviços
+          <span class="dropdown-arrow">↗</span>
+        </button>
+
+        <div class="dropdown-menu" id="services-menu">
+          <span class="dropdown-eyebrow">EXPLORE O UNIVERSO</span>
+          <a href="#" data-link="dance">Dança <span>↗</span></a>
+          <a href="#" data-link="choreography">Coreografias <span>↗</span></a>
+          <a href="#" data-link="events">Assessoria de eventos <span>↗</span></a>
+        </div>
+      </div>
+
+      <a href="#" data-link="portfolio" class="nav-link">
+        <span class="nav-index">03</span>
+        Portfólio
+      </a>
+
+      <a href="#" data-link="contact" class="header-contact">
+        VAMOS CRIAR?
+        <span class="contact-arrow">↗</span>
+      </a>
+    </nav>
+
+    <button class="menu-toggle" type="button"
+            aria-label="Abrir menu" aria-expanded="false"
+            aria-controls="main-navigation">
       <span></span>
       <span></span>
     </button>
 
-    <nav class="main-navigation" id="main-navigation" aria-label="Navegação principal">
-      <a href="#" data-link="home">Início</a>
-      <a href="#" data-link="about">Sobre</a>
-
-      <div class="nav-dropdown">
-        <button
-          class="dropdown-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="services-menu"
-        >
-          Serviços
-          <span class="dropdown-arrow" aria-hidden="true">⌄</span>
-        </button>
-
-        <div class="dropdown-menu" id="services-menu">
-          <a href="#" data-link="dance">Dança</a>
-          <a href="#" data-link="choreography">Coreografias</a>
-          <a href="#" data-link="events">Assessoria de eventos</a>
-        </div>
-      </div>
-
-      <a href="#" data-link="portfolio">Portfólio</a>
-
-      <a class="nav-contact" href="#" data-link="contact">
-        Vamos conversar <span aria-hidden="true">↗</span>
-      </a>
-    </nav>
-
   </div>
+  <div class="header-bottom-line"></div>
 </header>
-
