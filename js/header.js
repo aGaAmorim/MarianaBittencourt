@@ -1,14 +1,15 @@
+
 async function carregarHeader() {
   const placeholder = document.querySelector("[data-header]");
+  if (!placeholder) return;
 
-  if (!placeholder) 
-    return;
+  const caminho = window.location.pathname;
+  const paginaServico = /\/servicos\/[^/]+\.html$/.test(caminho);
+  const arquivoHeader = paginaServico
+    ? "../pages/header.html"
+    : "pages/header.html";
 
-  const caminhoAtual = window.location.pathname;
-  const estaEmServicos = /\/servicos\/[^/]+\.html$/.test(caminhoAtual);
-
-  const caminhoHeader = estaEmServicos ? "../pages/header.html" : "pages/header.html";
-  const resposta = await fetch(caminhoHeader);
+  const resposta = await fetch(arquivoHeader);
 
   if (!resposta.ok) {
     throw new Error("Não foi possível carregar o cabeçalho.");
@@ -23,11 +24,11 @@ async function carregarHeader() {
 }
 
 function configurarLinks() {
-  const estaEmServicos = /\/servicos\/[^/]+\.html$/.test(
+  const paginaServico = /\/servicos\/[^/]+\.html$/.test(
     window.location.pathname
   );
 
-  const raiz = estaEmServicos ? "../" : "";
+  const raiz = paginaServico ? "../" : "";
 
   const destinos = {
     home: `${raiz}index.html`,
@@ -41,10 +42,7 @@ function configurarLinks() {
 
   document.querySelectorAll("[data-link]").forEach((link) => {
     const destino = destinos[link.dataset.link];
-
-    if (destino) {
-      link.href = destino;
-    }
+    if (destino) link.href = destino;
   });
 }
 
@@ -52,25 +50,29 @@ function configurarMenuMobile() {
   const botao = document.querySelector(".menu-toggle");
   const navegacao = document.querySelector(".main-navigation");
 
-  if (!botao || !navegacao) 
-    return;
+  if (!botao || !navegacao) return;
 
   function fecharMenu() {
+    navegacao.classList.remove("is-open");
     botao.setAttribute("aria-expanded", "false");
     botao.setAttribute("aria-label", "Abrir menu");
-    navegacao.classList.remove("is-open");
+
+    const dropdown = document.querySelector(".nav-dropdown");
+    const dropdownBotao = document.querySelector(".dropdown-toggle");
+
+    dropdown?.classList.remove("is-open");
+    dropdownBotao?.setAttribute("aria-expanded", "false");
   }
 
   botao.addEventListener("click", () => {
     const aberto = botao.getAttribute("aria-expanded") === "true";
 
+    navegacao.classList.toggle("is-open", !aberto);
     botao.setAttribute("aria-expanded", String(!aberto));
     botao.setAttribute(
       "aria-label",
       aberto ? "Abrir menu" : "Fechar menu"
     );
-
-    navegacao.classList.toggle("is-open", !aberto);
   });
 
   navegacao.querySelectorAll("a").forEach((link) => {
@@ -78,19 +80,11 @@ function configurarMenuMobile() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      fecharMenu();
-      document.querySelector(".dropdown-toggle")
-        ?.setAttribute("aria-expanded", "false");
-      document.querySelector(".nav-dropdown")
-        ?.classList.remove("is-open");
-    }
+    if (event.key === "Escape") fecharMenu();
   });
 
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 900) {
-      fecharMenu();
-    }
+    if (window.innerWidth > 900) fecharMenu();
   });
 }
 
@@ -98,12 +92,10 @@ function configurarDropdown() {
   const dropdown = document.querySelector(".nav-dropdown");
   const botao = document.querySelector(".dropdown-toggle");
 
-  if (!dropdown || !botao) 
-    return;
+  if (!dropdown || !botao) return;
 
   botao.addEventListener("click", () => {
     const aberto = dropdown.classList.toggle("is-open");
-
     botao.setAttribute("aria-expanded", String(aberto));
   });
 
@@ -116,13 +108,12 @@ function configurarDropdown() {
 }
 
 function marcarPaginaAtual() {
-  const caminho = window.location.pathname;
+  const caminhoAtual = window.location.pathname;
 
   document.querySelectorAll("[data-link]").forEach((link) => {
-    const destino = new URL(link.href).pathname;
-    const paginaAtual = destino === caminho;
+    const caminhoLink = new URL(link.href).pathname;
 
-    if (paginaAtual) {
+    if (caminhoLink === caminhoAtual) {
       link.classList.add("is-active");
       link.setAttribute("aria-current", "page");
     }
@@ -131,7 +122,6 @@ function marcarPaginaAtual() {
 
 document.addEventListener("DOMContentLoaded", () => {
   carregarHeader().catch((erro) => {
-    console.error("Erro ao inicializar o header:", erro);
+    console.error("Erro ao carregar o cabeçalho:", erro);
   });
 });
-
